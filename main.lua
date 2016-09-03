@@ -1,5 +1,5 @@
--- Example: Complex Example
 local LightWorld = require "lib"
+local ProFi = require "lib/ProFi"
 
 function initScene()
 	-- physic world
@@ -29,6 +29,8 @@ function initScene()
 end
 
 function love.load()
+	ProFi:start()
+	
   love.graphics.setBackgroundColor(0, 0, 0)
 	love.graphics.setDefaultFilter("nearest", "nearest")
 
@@ -126,7 +128,7 @@ function love.load()
 end
 
 function love.update(dt)
-	love.window.setTitle("Light vs. Shadow Engine (FPS:" .. love.timer.getFPS() .. ")")
+	love.window.setTitle("Artificia (FPS:" .. love.timer.getFPS() .. ")")
 
   mx, my = (love.mouse.getX() - offsetX)/scale, (love.mouse.getY() - offsetY)/scale
 
