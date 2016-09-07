@@ -21,6 +21,7 @@ function Renderer:create()
       for i = 0, #self.drawers[layer] do
         local obj = self.drawers[layer][i]
         if obj ~= nil then
+          love.graphics.clear()
           obj:draw()
         end
       end
