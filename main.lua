@@ -1,18 +1,15 @@
-local lg = love.graphics
-show_debug = false
+local Tilemap = require "tilemap"
+
+tilemap = Tilemap:create()
 
 function love.load()
-	lg.setBackgroundColor(0, 0, 0)
-	lg.setDefaultFilter("nearest", "nearest")
-end
-
-function initGame()
-
+	tilemap:load()
 end
 
 function love.update(dt)
-
+	tilemap:update(dt)
 end
 
 function love.draw()
+	tilemap:draw()
 end
