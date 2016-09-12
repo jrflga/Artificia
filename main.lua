@@ -29,7 +29,7 @@ end
 
 function love.update(dt)
   gTime = gTime + dt
-  --print(gTime)
+  print(gTime)
   love.window.setTitle("Artificia - " .. love.timer.getFPS() .. " FPS")
   loopmngr:update(dt)
   lue:update(dt)
