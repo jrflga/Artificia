@@ -23,7 +23,7 @@ function Tile:new(x, y, mode, color, tileSize)
     love.graphics.rectangle(self.mode, self.x, self.y, tile.tileSize, tile.tileSize)
   end
 
-  function tile:checkCollision(x, y, clicking)
+  function tile:checkCollision(x, y, clicking, pos)
 
     if clicking == true
       and x >= self.x and x <= self.x + tile.tileSize
@@ -33,6 +33,15 @@ function Tile:new(x, y, mode, color, tileSize)
         self.mode = "line"
       else
         self.mode = "fill"
+        if clickmode == "Point A" then
+          tilemap[pointA.x][pointA.y].color = {50, 50, 50}
+          tilemap[pointA.x][pointA.y].mode = "line"
+          pointA = { x = pos.x, y = pos.y }
+        elseif clickmode == "Point B" then
+          tilemap[pointB.x][pointB.y].color = {50, 50, 50}
+          tilemap[pointB.x][pointB.y].mode = "line"
+          pointB = { x = pos.x, y = pos.y }
+        end
       end
       self.color = tipColor:getColor()
     end

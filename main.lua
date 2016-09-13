@@ -4,13 +4,15 @@ local Renderer = require "renderer"
 local LoopManager = require "loop_manager"
 local Tilemap = require "tile_map"
 
-local mapsizeX, mapsizeY = 64, 32  -- TODO: Min 4x4, Max 64x32 -> User must pick size
-local initPosX, initPosY = 170, 60
+local mapsizeX, mapsizeY = 10, 10  -- TODO: Min 4x4, Max 64x32 -> User must pick size
+local initPosX, initPosY = 20, 60
 local tileSize = 16
 
-modeoptions = "Pick a mode (1 - Clear, 2 - Wall, 3 - Point A and 4 - Point B)"
+modeoptions = "Pick a mode (1 - Clear, 2 - Wall, 3 - Water, 4 - Point A or 5 - Point B)"
 clickmode = "Clear"
 tipColor = nil
+
+pointA, pointB = {}, {}
 
 renderer = Renderer:create()
 loopmngr = LoopManager:create()
@@ -20,6 +22,8 @@ gTime = 0
 
 function love.load()
   tilemap:load()
+  pointA = {x = 0, y = 0}
+  pointB = {x = mapsizeX-1, y = mapsizeY-1}
 
   font = love.graphics.newImageFont("gfx/font.png", " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?-+/():;%&`'*#=[]\"")
   love.graphics.setFont(font)
@@ -29,8 +33,8 @@ end
 
 function love.update(dt)
   gTime = gTime + dt
-  print(gTime)
-  love.window.setTitle("Artificia - " .. love.timer.getFPS() .. " FPS")
+  --print(gTime)
+  love.window.setTitle(" Bx: " .. pointB.x .. " By:" .. pointB.y .. " Artificia - " .. love.timer.getFPS() .. " FPS")
   loopmngr:update(dt)
   lue:update(dt)
 end
@@ -41,6 +45,10 @@ function love.draw()
   love.graphics.print(modeoptions, 10, 10)
   love.graphics.setColor(tipColor:getColor())
   love.graphics.print(clickmode, 10, 30)
+  love.graphics.setColor({200, 50, 50})
+  love.graphics.print("Ax: " .. pointA.x .. " Ay:" .. pointA.y, 650, 10)
+  love.graphics.setColor({50, 200, 50})
+  love.graphics.print("Bx: " .. pointB.x .. " By:" .. pointB.y, 650, 30)
 end
 
 function love.keypressed(k)
