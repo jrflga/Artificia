@@ -21,7 +21,10 @@ Might become a game at some point in the future. Who knows.
 <a title="Milena Crivella" target="_blank" href="http://github.com/MilenaCrivella">
     <img src="https://avatars0.githubusercontent.com/u/9369529?s=50"/>
 </a>&nbsp;&nbsp;
+<a title="Thiago do Prado" target="_blank" href="http://github.com/PradoTPS">
+    <img src="https://avatars0.githubusercontent.com/u/11035000?s=50"/>
+</a>&nbsp;&nbsp;
 <a title="Thiago Torres" target="_blank" href="http://github.com/ThiagoZx">
     <img src="https://avatars0.githubusercontent.com/u/11080794?s=50"/>
-</a>&nbsp;&nbsp;
+</a>
 </p>
