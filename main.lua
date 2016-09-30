@@ -62,7 +62,7 @@ function love.draw()
   love.graphics.print("A: (" .. pointA.x .. ", " .. pointA.y .. ")", 650, 10)
   love.graphics.setColor(COLOR.GREEN)
   love.graphics.print("B: (" .. pointB.x .. ", " .. pointB.y .. ")", 650, 30)  
-  print(dist(pointA.x, pointA.y, pointB.x, pointB.y))
+  print(h_score(pointA.x, pointA.y, pointB.x, pointB.y))
 end
 
 function love.keypressed(k)
@@ -74,43 +74,113 @@ function love.keypressed(k)
   if k == "5" then clickmode = "Point B" tipColor:setColor(COLOR.GREEN) end
 end
 
-function dist(x1, y1, x2, y2)
-  return x2 - x1 + y2 - y1
+function reconstruct_path(cameFrom, current)
+  total_path := [current]
+  while current in cameFrom.Keys:
+      current := cameFrom[current]
+      total_path.append(current)
+  return total_path
 end
 
-function F(x1, y1, x2, y2, x3, y3)
-  return dist(x1, y1, x2, y2) + dist(x2, y2, x3, y3)
+function h_score(start, goal)
+  return goal.x - start.x + goal.y - start.y
 end
 
-function astar(x1, y1, x2, y2)  -- TODO: This!
-  --[[
-    F = G + H
-    G = Cost from Point A to a given square
-    H = Cost from given square to Point B
-    F = dist(PointA, tile) + dist(tile, PointB)
-    Regular tiles cost 10pts
-    Water costs 13pts (30%+)
-    Walls cost Infinite
+function g_score(parent_g, direction)
+  if direction == "horizontal" or direction == "vertical" then
+    return parent_g + 10
+  else
+    return parent_g + 14
+  end
+end
 
-    Add the starting square to the open list
-    Repeat:
-      Calculate F for the 8 tiles around you
-      Get the lowest F tile
-      Switch that tile to the closed list
-      For all 8 squares around that one:
-        If Wall or in closed list, ignore
-        If not on open list:
-          Add it to open list.
-          Make the current square its parent square
-          Record the F, G and H costs of that square
-        If on the open list:
-          If G cost is lower:
-            Change the parent of the square to the current square
-            Recalculate G and F of the square
-      Stop when:
-        Target square is added to the closed list (path found)
-        Empty open list, but target square not on closed list (no path)
-    Go from each square to its parent square. That's the path
-  --]]
-  return nil
+function f_score(current, node)
+  return h_score(node) + g_score(current, node)
+end
+
+function a_star(start, goal)
+  local insert = table.insert
+  local remove = table.remove
+
+  local open_list = {}
+  local closed_list = {}
+
+  local current_node = {
+    x = start.x,
+    y = start.y,
+    h = h_score(start, goal),
+    g = 0,
+    f = h_score(start, goal)
+  }
+
+  insert(open_list, current_node)
+
+  while #open_list not 0
+    local node_current = { x = nil, y = nil, f = 10000 }
+
+    for i=0, #open_list-1 do
+      if open_list[i].f < node_current.f then
+        node_current = open_list[i]
+      end
+
+      if node_current.x == goal.x and node_current.y == goal.y then
+        return { x = node_current.x, y = node_current.y }
+      end
+    end
+
+    local nodes_around = {}
+
+    if node_current.x not 0 then
+      local left = tilemap[node_current.x - 1][node_current.y]
+      insert(nodes_around, {
+        x = left.x,
+        y = left.y,
+        h = h_score(left, goal),
+        g = g_score(<parent>, "horizontal"),
+        f = h_score(left, goal) + g_score()
+      })
+    end
+    if node_current.y not 0 then
+      local top = tilemap[node_current.x][node_current.y - 1]
+      insert(nodes_around, { top.x, top.y })
+    end
+    if (node_current.x + 1) <= mapsizeX - 1 then
+      local right = tilemap[node_current.x + 1][node_current.y]
+      insert(nodes_around, { right.x, right.y })
+    end
+    if (node_current.y + 1) <= mapsizeY - 1 then
+      local bottom = tilemap[node_current.x][node_current.y + 1]
+      insert(nodes_around, { bottom.x, bottom.y })
+    end
+    insert(nodes_around, tile)
+    
+
+
+-- PSEUDOCODE [
+  Generate each state node_successor that come after node_current
+  for each node_successor of node_current {
+    Set successor_current_cost = g(node_current) + w(node_current, node_successor)
+    if node_successor is in the OPEN list {
+      if g(node_successor) ≤ successor_current_cost continue (to line 20)
+    } else if node_successor is in the CLOSED list {
+      if g(node_successor) ≤ successor_current_cost continue (to line 20)
+      Move node_successor from the CLOSED list to the OPEN list
+    } else {
+      Add node_successor to the OPEN list
+      Set h(node_successor) to be the heuristic distance to node_goal
+    }
+    Set g(node_successor) = successor_current_cost
+    Set the parent of node_successor to node_current
+  }
+  Add node_current to the CLOSED list
+}
+-- PSEUDOCODE ]
+
+  end
+
+-- PSEUDOCODE [
+if(node_current != node_goal) exit with error (the OPEN list is empty)
+  -- PSEUDOCODE ]
+
+
 end
