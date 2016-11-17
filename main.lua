@@ -137,6 +137,8 @@ function tilemap_draw(sizeX, sizeY)
 end
 
 function tilemap_click(x, y)
+    -- TODO: Bad code. Redo.
+
     local lock = false
     for i=1, mapsizeX do
         for j=1, mapsizeY do
@@ -147,10 +149,14 @@ function tilemap_click(x, y)
             and tilemap[i-1][j-1].tile_type ~= 3 and tilemap[i-1][j-1].tile_type ~= 4
             and not lock then
                 if drawing_tile == 3 then
-                    tilemap[pointA.x][pointA.y].tile_type = 0
+                    if tilemap[pointA.x] and tilemap[pointA.x][pointA.y] then
+                        tilemap[pointA.x][pointA.y].tile_type = 0
+                    end
                     pointA = { x = i-1, y = j-1, g = 0, h = 0, f = 0 }
                 elseif drawing_tile == 4 then
-                    tilemap[pointB.x][pointB.y].tile_type = 0
+                    if tilemap[pointB.x] and tilemap[pointB.x][pointB.y] then
+                        tilemap[pointB.x][pointB.y].tile_type = 0
+                    end
                     pointB = { x = i-1, y = j-1, g = 0, h = 0, f = 0 }
                 end
                 tilemap[i-1][j-1].tile_type = drawing_tile
