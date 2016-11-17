@@ -19,7 +19,8 @@ folder to love.exe, and everything should run smoothly.
 
 Press the following numbers on the keyboard to paint different tiles:
 
-```1 - Clear
+```
+1 - Clear
     Clears the clicked tile
 
 2 - Wall
@@ -35,7 +36,8 @@ Press the following numbers on the keyboard to paint different tiles:
     Sets the end point
 
 6 - Run
-    Runs the pathfinding algorithm```
+    Runs the pathfinding algorithm
+```
 
 ## Known issues
 

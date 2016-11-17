@@ -17,7 +17,8 @@ para love.exe, e tudo deve correr bem.
 
 Pressione as seguintes teclas para pintar as diferentes tiles:
 
-```1 - Clear
+```
+1 - Clear
     Limpa a tile clicada
 
 2 - Parece
@@ -33,7 +34,8 @@ Pressione as seguintes teclas para pintar as diferentes tiles:
     Define o ponto final
 
 6 - Executar
-    Executa o algoritmo de pathfinding```
+    Executa o algoritmo de pathfinding
+```
 
 ## Problemas conhecidos
 
