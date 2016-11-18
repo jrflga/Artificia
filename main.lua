@@ -31,7 +31,7 @@ function love.load()
         BLUE = { 52, 152, 219 },
         GREEN = { 50, 200, 50 },
         WHITE = { 180, 180, 180 },
-        PURPLE = { 142, 68, 173 }
+        ORANGE = { 241, 196, 15 }
     }
 
 
@@ -78,7 +78,7 @@ function love.draw()
     love.graphics.setColor(COLOR.GREEN)
     love.graphics.print("B: (" .. pointB.x .. ", " .. pointB.y .. ")", 650, 30)
     tilemap_draw(mapsizeX, mapsizeY)
-    love.graphics.setColor(COLOR.PURPLE)
+    love.graphics.setColor(COLOR.ORANGE)
     if #line_points > 4 and #line_points % 2 == 0 then love.graphics.line(line_points) end
 end
 
@@ -171,7 +171,7 @@ end
 
 
 function isWalkableAt(x, y)
-    return tilemap[x][y].tile_type == 0
+    return tilemap[x][y].tile_type == 0 or tilemap[x][y].tile_type == 4
 end
 
 function f_cost(previous, current) -- Node, Start, PointB
@@ -190,13 +190,12 @@ function f_cost(previous, current) -- Node, Start, PointB
 end
 
 function dist(pos1, pos2)
-    return math.sqrt(math.pow(pos2.x - pos1.x, 2) + math.pow(pos2.y - pos1.y, 2))
+    return math.sqrt(math.pow((pos2.x - pos1.x), 2) + math.pow((pos2.y - pos1.y), 2))
 end
 
 function has_been_on_node(position, list)
     if #list > 1 then
         for i=1, #list do
-            print("Checking " .. list[i].x .. " / " .. list[i].y)
             if list[i].x == position.x and list[i].y == position.y then
                 return true
             end
@@ -257,7 +256,11 @@ function find_best_neighbor(tile)
         best_neighbor = get_best(tile, { x = x+1, y = y, diagonal = false }, best_neighbor)
     end
 
-    return best_neighbor
+    if best_neighbor.f == INF then
+        return false
+    else
+        return best_neighbor
+    end
 end
 
 function a_star()
@@ -268,11 +271,18 @@ function a_star()
     local next_node = {}
     local counter = 0
 
-    while current_node.x ~= pointB.x and current_node.y ~= pointB.y do
+    while true do
         counter = counter + 1
         next_node = find_best_neighbor(current_node)
+        if next_node == false then
+            break
+        end
         insert(path, next_node)
+        print("F: " .. next_node.f .. " G: " .. next_node.g .. " H: " .. next_node.h)
         current_node = next_node
+        if current_node.x == pointB.x and current_node.y == pointB.y then
+            break
+        end
     end
 
     insert(path, pointB)
